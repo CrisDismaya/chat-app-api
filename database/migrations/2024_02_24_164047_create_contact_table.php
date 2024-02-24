@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('contact', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken()->nullable();
+            $table->string('email');
+            $table->string('message')->nullable();
+            $table->boolean('is_accept')->default(false);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('NO ACTION');
         });
     }
 
@@ -28,9 +30,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('contact', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('contact');
     }
 };

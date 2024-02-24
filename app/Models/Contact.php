@@ -8,6 +8,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Models\User;
+
 class Contact extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -38,4 +40,8 @@ class Contact extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    public function user() {
+        return $this->hasMany(User::class);
+    }
 }

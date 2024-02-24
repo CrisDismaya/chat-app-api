@@ -94,4 +94,20 @@ class ContactController extends Controller
             'contact' => $contact,
         ], 201);
     }
+
+    public function search(Request $request){
+        $contact = Contact::whereNull('deleted_at')
+            ->where('is_accept', '1')
+            ->where(function($query) use ($request) {
+                $search = $request->search;
+
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+        return response()->json([
+            'contact' => $contact,
+        ], 201);
+    }
 }

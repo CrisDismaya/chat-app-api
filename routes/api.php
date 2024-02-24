@@ -26,9 +26,12 @@ Route::middleware('auth:sanctum')->group( function () {
 
     Route::get('/contact', [ContactController::class, 'index']);
     Route::post('/contact', [ContactController::class, 'store']);
-    Route::get('/contact/{id}', [ContactController::class, 'show']);
     Route::put('/contact/{id}', [ContactController::class, 'update']);
     Route::delete('/contact/{id}', [ContactController::class, 'delete']);
+    Route::get('/contact/search', [ContactController::class, 'search']);
+    Route::get('/contact/request', [ContactController::class, 'contactRequest']);
+    Route::put('/contact/confirm/{id}', [ContactController::class, 'contactConfirm']);
+    Route::get('/contact/{id}', [ContactController::class, 'show']);
 
     Route::get('/logout', [AuthController::class, 'logout']);
 });

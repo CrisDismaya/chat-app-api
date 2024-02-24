@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('message')->nullable();
-            $table->boolean('is_accept')->default(false);
+            $table->enum('is_accept', [0, 1, 2])->default(0);
             $table->timestamps();
             $table->softDeletes();
 

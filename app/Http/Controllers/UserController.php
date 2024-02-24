@@ -19,7 +19,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = User::select()->get();
+        $users = User::all();
 
         return response()->json([
             'users' => $users

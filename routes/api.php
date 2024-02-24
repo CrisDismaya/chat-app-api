@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController as AuthController;
 use App\Http\Controllers\UserController as UserController;
+use App\Http\Controllers\ContactController as ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,11 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::put('/user/{id}', [UserController::class, 'update']);
     Route::delete('/user/{id}', [UserController::class, 'delete']);
 
-    
+    Route::get('/contact', [ContactController::class, 'index']);
+    Route::post('/contact', [ContactController::class, 'store']);
+    Route::get('/contact/{id}', [ContactController::class, 'show']);
+    Route::put('/contact/{id}', [ContactController::class, 'update']);
+    Route::delete('/contact/{id}', [ContactController::class, 'delete']);
 
     Route::get('/logout', [AuthController::class, 'logout']);
 });

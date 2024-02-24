@@ -12,6 +12,8 @@ class Contact extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'contact';
+
     /**
      * The attributes that are mass assignable.
      *

@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\Contact;
+use App\Models\GroupChatMember;
 
 class User extends Authenticatable
 {
@@ -52,6 +53,10 @@ class User extends Authenticatable
 
     public function contact() {
         return $this->belongsTo(Contact::class, 'user_id', 'id');
+    }
+
+    public function groupChatMembers(){
+        return $this->hasMany(GroupChatMember::class);
     }
 
     public static function validate($request) {

@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Models\User;
 use App\Models\GroupChat;
 
 class GroupChatMember extends Model
@@ -32,12 +33,18 @@ class GroupChatMember extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+        'group_chat_id',
         'created_at',
         'updated_at',
         'deleted_at'
     ];
 
-    public function groupChat() {
+    public function group() {
         return $this->hasMany(GroupChat::class);
     }
+
+    public function users() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
 }

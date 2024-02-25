@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('group_chat_id')->references('id')->on('users')->onDelete('NO ACTION');
+            $table->foreign('group_chat_id')->references('id')->on('group_chat')->onDelete('NO ACTION');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('NO ACTION');
         });
     }

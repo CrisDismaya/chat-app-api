@@ -33,12 +33,13 @@ class GroupChat extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+        'user_id',
         'created_at',
         'updated_at',
         'deleted_at'
     ];
 
     public function members() {
-        return $this->belongsTo(GroupChatMember::class, 'group_chat_id', 'id');
+        return $this->hasMany(GroupChatMember::class, 'group_chat_id', 'id');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\GroupChat;
 use App\Models\GroupChatMember;
@@ -69,6 +70,26 @@ class GroupChatController extends Controller
 
         return response()->json([
             'group' => $group
+        ], 201);
+    }
+
+    public function search(Request $request) {
+        $user = Auth::user();
+
+        $groupMembers = GroupChatMember::with('groups')
+            ->where('user_id', $user->id)
+            ->where(function($query) use ($request, $user){
+                $search = $request->search;
+
+                $query->whereHas('groups', function($subquery) use ($search) {
+                    $subquery->where('name', 'like', '%' . $search . '%');
+                });
+            })
+            ->get();
+        $group = $groupMembers->pluck('groups');
+
+        return response()->json([
+            'group' => $group,
         ], 201);
     }
 

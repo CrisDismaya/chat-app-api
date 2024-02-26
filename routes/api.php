@@ -22,10 +22,10 @@ use App\Http\Controllers\MessagesController AS MessagesController;
 
 Route::middleware('auth:sanctum')->group( function () {
     Route::get('/user', [UserController::class, 'index']);
-    Route::get('/user/{id}', [UserController::class, 'show']);
     Route::put('/user/{id}', [UserController::class, 'update']);
     Route::delete('/user/{id}', [UserController::class, 'delete']);
-    // add serach route in user
+    Route::get('/user/search', [UserController::class, 'search']);
+    Route::get('/user/{id}', [UserController::class, 'show']);
 
     Route::get('/contact', [ContactController::class, 'index']);
     Route::post('/contact/create', [ContactController::class, 'store']);
@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/group/create', [GroupChatController::class, 'store']);
     Route::put('/group/{id}', [GroupChatController::class, 'update']);
     Route::delete('/group/{id}', [GroupChatController::class, 'delete']);
+    Route::get('/group/search', [GroupChatController::class, 'search']);
     Route::post('/group/member/{id}', [GroupChatController::class, 'addMember']);
     Route::delete('/group/member/{id}', [GroupChatController::class, 'removeMember']);
     Route::get('/group/{id}', [GroupChatController::class, 'show']);
@@ -48,9 +49,12 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/messages/create', [MessagesController::class, 'store']);
     Route::put('/messages/{id}', [MessagesController::class, 'update']);
     Route::delete('/messages/{id}', [MessagesController::class, 'delete']);
+    Route::get('/messages/search', [MessagesController::class, 'search']);
     Route::get('/messages/{id}', [MessagesController::class, 'show']);
-    Route::get('/auth/login', [AuthController::class, 'logout']);
-    // add serach route in message
+
+
+    Route::get('/auth/logout', [AuthController::class, 'logout']);
+
 });
 
 Route::get('/auth', [AuthController::class, 'auth']);

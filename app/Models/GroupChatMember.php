@@ -39,8 +39,8 @@ class GroupChatMember extends Model
         'deleted_at'
     ];
 
-    public function group() {
-        return $this->hasMany(GroupChat::class);
+    public function groups() {
+        return $this->belongsTo(GroupChat::class, 'group_chat_id', 'id');
     }
 
     public function users() {

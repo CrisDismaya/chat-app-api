@@ -21,7 +21,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = User::all();
+        $users = User::whereNotNull('email_verified_at')->whereNull('deleted_at')->get();
 
         return response()->json([
             'users' => $users
@@ -68,6 +68,22 @@ class UserController extends Controller
     public function delete(Request $request, $id){
         $user = User::find($id);
         $user->delete();
+
+        return response([
+            'user' => $user
+        ], 201);
+    }
+
+    public function search(Request $request){
+
+        $user = User::whereNotNull('email_verified_at')->whereNull('deleted_at')
+            ->where(function($query) use ($request) {
+                $search = $request->search;
+
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            })
+            ->get();
 
         return response([
             'user' => $user

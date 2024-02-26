@@ -69,4 +69,20 @@ class MessagesController extends Controller
             'message' => $message
         ], 201);
     }
+
+    public function search(Request $request){
+        $user = Auth::user();
+        $message = Messages::where('is_delete', '0')->whereNull('deleted_at')
+            ->where('sender_id', $user->id)
+            ->where(function($query) use ($request) {
+                $search = $request->search;
+
+                $query->where('message', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+        return response()->json([
+            'message' => $message,
+        ], 201);
+    }
 }

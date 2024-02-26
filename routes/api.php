@@ -28,7 +28,7 @@ Route::middleware('auth:sanctum')->group( function () {
     // add serach route in user
 
     Route::get('/contact', [ContactController::class, 'index']);
-    Route::post('/contact', [ContactController::class, 'store']);
+    Route::post('/contact/create', [ContactController::class, 'store']);
     Route::put('/contact/{id}', [ContactController::class, 'update']);
     Route::delete('/contact/{id}', [ContactController::class, 'delete']);
     Route::get('/contact/search', [ContactController::class, 'search']);
@@ -37,7 +37,7 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/contact/{id}', [ContactController::class, 'show']);
 
     Route::get('/group', [GroupChatController::class, 'index']);
-    Route::post('/group', [GroupChatController::class, 'store']);
+    Route::post('/group/create', [GroupChatController::class, 'store']);
     Route::put('/group/{id}', [GroupChatController::class, 'update']);
     Route::delete('/group/{id}', [GroupChatController::class, 'delete']);
     Route::post('/group/member/{id}', [GroupChatController::class, 'addMember']);
@@ -45,15 +45,15 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::get('/group/{id}', [GroupChatController::class, 'show']);
 
     Route::get('/messages', [MessagesController::class, 'index']);
-    Route::post('/messages', [MessagesController::class, 'store']);
+    Route::post('/messages/create', [MessagesController::class, 'store']);
     Route::put('/messages/{id}', [MessagesController::class, 'update']);
     Route::delete('/messages/{id}', [MessagesController::class, 'delete']);
-    
     Route::get('/messages/{id}', [MessagesController::class, 'show']);
-
-    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/auth/login', [AuthController::class, 'logout']);
+    // add serach route in message
 });
 
 Route::get('/auth', [AuthController::class, 'auth']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/user', [UserController::class, 'store']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/validate/otp', [AuthController::class, 'otpValidate']);
+Route::post('/user/create', [UserController::class, 'store']);

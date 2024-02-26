@@ -35,4 +35,12 @@ class AuthController extends Controller
 
         return $user->deleteToken($user);
     }
+
+    public function otpValidate(Request $request){
+        $user = User::where('email', $request->email)->where('otp', $request->otp)->get();
+
+        return response()->json([
+            'user' => $user
+        ], 201);
+    }
 }

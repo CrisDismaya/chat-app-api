@@ -46,6 +46,10 @@ Route::middleware('auth:sanctum')->group( function () {
 
     Route::get('/messages', [MessagesController::class, 'index']);
     Route::post('/messages', [MessagesController::class, 'store']);
+    Route::put('/messages/{id}', [MessagesController::class, 'update']);
+    Route::delete('/messages/{id}', [MessagesController::class, 'delete']);
+    
+    Route::get('/messages/{id}', [MessagesController::class, 'show']);
 
     Route::get('/logout', [AuthController::class, 'logout']);
 });

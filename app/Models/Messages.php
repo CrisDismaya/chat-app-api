@@ -20,8 +20,9 @@ class Messages extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'sender_id',
+        'receiver_id',
         'group_chat_id',
-        'user_id',
         'message',
         'is_delete',
     ];

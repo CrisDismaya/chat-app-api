@@ -26,6 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'otp',
+        'email_verified_at',
     ];
 
     /**
@@ -34,7 +35,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'otp',
         'remember_token',
         'email_verified_at',
@@ -49,7 +49,6 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 

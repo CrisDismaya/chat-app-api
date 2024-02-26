@@ -22,7 +22,8 @@ class Messages extends Model
     protected $fillable = [
         'group_chat_id',
         'user_id',
-        'message'
+        'message',
+        'is_delete',
     ];
 
     /**
@@ -34,7 +35,7 @@ class Messages extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
 
 }

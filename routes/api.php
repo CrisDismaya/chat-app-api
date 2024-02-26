@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController as AuthController;
 use App\Http\Controllers\UserController as UserController;
 use App\Http\Controllers\ContactController as ContactController;
 use App\Http\Controllers\GroupChatController as GroupChatController;
+use App\Http\Controllers\MessagesController AS MessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,11 +40,12 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::post('/group', [GroupChatController::class, 'store']);
     Route::put('/group/{id}', [GroupChatController::class, 'update']);
     Route::delete('/group/{id}', [GroupChatController::class, 'delete']);
-
     Route::post('/group/member/{id}', [GroupChatController::class, 'addMember']);
     Route::delete('/group/member/{id}', [GroupChatController::class, 'removeMember']);
-
     Route::get('/group/{id}', [GroupChatController::class, 'show']);
+
+    Route::get('/messages', [MessagesController::class, 'index']);
+    Route::post('/messages', [MessagesController::class, 'store']);
 
     Route::get('/logout', [AuthController::class, 'logout']);
 });

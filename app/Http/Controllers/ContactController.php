@@ -20,7 +20,7 @@ class ContactController extends Controller
         $contact = Contact::whereNull('deleted_at')
             ->where('is_accept', '1')
             ->where(function($query) use ($user) {
-                $query->where('id', $user->id)
+                $query->where('user_id', $user->id)
                     ->orWhere('email', $user->email);
             })
             ->get();
@@ -96,10 +96,13 @@ class ContactController extends Controller
     }
 
     public function search(Request $request){
+        $user = Auth::user();
         $contact = Contact::whereNull('deleted_at')
             ->where('is_accept', '1')
-            ->where(function($query) use ($request) {
+            ->where(function($query) use ($request, $user) {
                 $search = $request->search;
+
+                $query->where('user_id', $user->id);
 
                 $query->where('name', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%');

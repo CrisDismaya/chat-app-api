@@ -33,6 +33,8 @@ class MessagesController extends Controller
             'message'  => $request->message,
         ]);
 
+        // event(new SendMessageNotification($request->message));
+
         return response()->json([
             'message' => $message
         ], 201);

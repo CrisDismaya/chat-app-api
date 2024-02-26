@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('group_chat_id');
             $table->unsignedBigInteger('user_id');
             $table->text('message');
+            $table->enum('is_delete', [0, 1, 2])->default(0); // (0 - no changes) : (1 - delete only me) : (2 - delete all)
             $table->timestamps();
             $table->softDeletes();
 

@@ -11,6 +11,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\Contact;
 use App\Models\GroupChatMember;
+use App\Models\Messages;
+
 
 class User extends Authenticatable
 {
@@ -22,6 +24,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'path',
         'name',
         'email',
         'password',

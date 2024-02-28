@@ -24,7 +24,7 @@ class GroupChatMember extends Model
      */
     protected $fillable = [
         'group_chat_id',
-        'user_id',
+        'contact_id',
     ];
 
     /**

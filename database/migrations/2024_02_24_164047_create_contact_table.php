@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('contact', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_request_id');
+            $table->unsignedBigInteger('user_confirm_id');
             $table->string('name');
             $table->string('email');
             $table->string('message')->nullable();
@@ -21,7 +22,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('NO ACTION');
+            $table->foreign('user_request_id')->references('id')->on('users')->onDelete('NO ACTION');
+            $table->foreign('user_confirm_id')->references('id')->on('users')->onDelete('NO ACTION');
         });
     }
 

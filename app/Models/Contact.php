@@ -22,8 +22,8 @@ class Contact extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
-        'path',
+        'user_request_id',
+        'user_confirm_id',
         'name',
         'email',
         'message',
@@ -41,7 +41,8 @@ class Contact extends Model
         'deleted_at'
     ];
 
-    public function user() {
-        return $this->hasMany(User::class);
+    public function users() {
+        return $this->belongsTo(User::class, 'user_confirm_id', 'id');
     }
+
 }

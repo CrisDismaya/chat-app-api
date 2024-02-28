@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\User;
 use App\Models\Contact;
 
 class ContactController extends Controller
@@ -16,24 +17,46 @@ class ContactController extends Controller
     }
 
     public function index(){
-        $user = Auth::user();
-        $contact = Contact::whereNull('deleted_at')
+        $auth = Auth::user();
+        $contact = Contact::with('users')
             ->where('is_accept', '1')
-            ->where(function($query) use ($user) {
-                $query->where('user_id', $user->id)
-                    ->orWhere('email', $user->email);
+            ->where(function($query) use ($auth) {
+                $query->where('user_request_id', $auth->id)
+                    ->orWhere('user_confirm_id', $auth->id);
             })
             ->get();
 
+        $contactFormat = $contact->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'users' => $item->users
+            ];
+        });
+
         return response()->json([
-            'contact' => $contact
+            'contact' => $contactFormat
         ], 201);
     }
 
     public function store(Request $request){
+        $auth = Auth::user();
+        $user = User::where('email', 'like', '%'. $request->email .'%')->whereNotNull('email_verified_at')->whereNull('deleted_at')->first();
+
+        if(!$user){
+            return response()->json([
+                'contact' => 'This email is not exist'
+            ], 401);
+        }
+        else if($user->id == $auth->id){
+            return response()->json([
+                'contact' => 'This email is same your email'
+            ], 401);
+        }
+
         $contact = Contact::create([
-            'user_id' => $request->user_id,
-            'name' => $request->name,
+            'user_request_id' => $auth->id,
+            'user_confirm_id' => $user->id,
+            'name' => $user->name,
             'email' => $request->email,
             'message' => $request->message,
         ]);
@@ -73,8 +96,8 @@ class ContactController extends Controller
     }
 
     public function contactRequest(){
-        $user = Auth::user();
-        $contact = Contact::where(DB::raw('LOWER(email)'), strtolower($user->email))
+        $auth = Auth::user();
+        $contact = Contact::where('user_confirm_id', $auth->id)
             ->whereNull('deleted_at')
             ->where('is_accept', '0')
             ->get();
@@ -96,21 +119,25 @@ class ContactController extends Controller
     }
 
     public function search(Request $request){
-        $user = Auth::user();
-        $contact = Contact::whereNull('deleted_at')
+        $auth = Auth::user();
+
+        $contact = Contact::with('users')
             ->where('is_accept', '1')
-            ->where(function($query) use ($request, $user) {
+            ->where(function($query) use ($request) {
                 $search = $request->search;
-
-                $query->where('user_id', $user->id);
-
-                $query->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('email', 'like', '%' . $search . '%');
+                $query->whereHas('users', function($subquery) use ($search) {
+                    $subquery->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%');
+                });
+            })
+            ->where(function($query) use ($auth) {
+                $query->where('user_request_id', $auth->id)
+                    ->orWhere('user_confirm_id', $auth->id);
             })
             ->get();
 
         return response()->json([
-            'contact' => $contact,
+            'contact' => $contact
         ], 201);
     }
 }

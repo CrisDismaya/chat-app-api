@@ -23,7 +23,6 @@ class GroupChat extends Model
      */
     protected $fillable = [
         'path',
-        'user_id',
         'name',
     ];
 
@@ -33,7 +32,6 @@ class GroupChat extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-        'user_id',
         'created_at',
         'updated_at',
         'deleted_at'

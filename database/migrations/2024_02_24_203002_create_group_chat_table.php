@@ -14,12 +14,9 @@ return new class extends Migration
         Schema::create('group_chat', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('path')->nullable();
-            $table->unsignedBigInteger('user_id');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('NO ACTION');
         });
     }
 

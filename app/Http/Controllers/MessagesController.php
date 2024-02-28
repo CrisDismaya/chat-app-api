@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Events\SendMessageNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+use App\Models\Contact;
+use App\Models\GroupChat;
 use App\Models\Messages;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class MessagesController extends Controller
 {
@@ -16,11 +19,36 @@ class MessagesController extends Controller
     }
 
     public function index(){
-        $user = Auth::user();
-        $message = Messages::where('sender_id', $user->id)->get();
+        $auth = Auth::user();
+        // $message = Messages::where('sender_id', $user->id)->get();
+
+        $users = User::with('userContacts', 'userGroups.groups')
+            ->whereHas('userContacts')->orWhereHas('userGroups')
+            ->whereNot('id', $auth->id)
+            ->get();
+
+        $contacts = Contact::with('users')
+            ->where('is_accept', '1')
+            ->where(function($query) use ($auth) {
+                $query->where('user_request_id', $auth->id)
+                    ->orWhere('user_confirm_id', $auth->id);
+            })->get();
+
+        $groupChats = GroupChat::with('members')
+            ->where(function($query) use ($auth) {
+                $query->whereHas('members', function($subquery) use ($auth) {
+                    $subquery->where('user_id', $auth->id);
+                });
+            })->get();
+
+        // $messages = $contacts->union($groupChats)->get();
+
 
         return response()->json([
-            'message' => $message
+            // 'messages' => $messages,
+            'users' => $users,
+            // 'contacts' => $contacts,
+            // 'groupChats' => $groupChats,
         ], 201);
     }
 

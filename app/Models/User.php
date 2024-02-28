@@ -56,12 +56,20 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function contact() {
-        return $this->belongsTo(Contact::class, 'user_id', 'id');
+    public function contacts() {
+        return $this->hasMany(Contact::class);
     }
 
     public function groupChatMembers(){
         return $this->hasMany(GroupChatMember::class);
+    }
+
+    public function userContacts(){
+        return $this->belongsTo(Contact::class, 'id', 'user_confirm_id');
+    }
+
+    public function userGroups(){
+        return $this->belongsTo(GroupChatMember::class, 'id', 'user_id');
     }
 
     public static function validate($request) {

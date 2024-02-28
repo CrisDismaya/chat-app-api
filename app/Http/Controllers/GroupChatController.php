@@ -26,7 +26,6 @@ class GroupChatController extends Controller
     public function store(Request $request) {
         $group = GroupChat::create([
             'path' => $request->path,
-            'user_id' => $request->user_id,
             'name' => $request->name,
         ]);
 
